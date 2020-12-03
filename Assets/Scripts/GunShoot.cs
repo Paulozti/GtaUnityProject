@@ -12,6 +12,7 @@ public class GunShoot : MonoBehaviour
     public GameObject gun;
     public Animator gunAnim;
     bool fire;
+    public GameObject shootPosition;
 
     public enum State
     {
@@ -82,7 +83,7 @@ public class GunShoot : MonoBehaviour
         Rigidbody rdb = null;
         Vector3 point = Vector3.zero;
         
-        if (Physics.Raycast(vfxmuzzle.transform.position, vfxmuzzle.transform.forward, out RaycastHit hit, 100))
+        if (Physics.Raycast(shootPosition.transform.position, shootPosition.transform.forward, out RaycastHit hit, 100))
         {
             vfxricochete.transform.position = hit.point;
             rdb = hit.collider.GetComponent<Rigidbody>();

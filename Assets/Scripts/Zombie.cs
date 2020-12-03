@@ -13,6 +13,7 @@ public class Zombie : MonoBehaviour
     Animator animator;
     public bool isDead = false;
     private ZombieRagdoll zombieRag;
+    public bool isAttackingPlayerHp = false;
 
     public enum ZombieState
     {
@@ -67,6 +68,7 @@ public class Zombie : MonoBehaviour
     {
         while (canSeePlayer && !isDead)
         {
+            haveSeenPlayer = true;
             nma.SetDestination(player.position);
             animator.SetBool("Attacking", true);
             animator.SetFloat("Speed", nma.velocity.magnitude);
@@ -81,7 +83,8 @@ public class Zombie : MonoBehaviour
 
     public void Die()
     {
-        isDead = true; 
+        isDead = true;
+        player.GetComponent<PlayerHP>().ZombieKilled();
         zombieRag.ActivateRagdoll();
     }
     private void ZombieCanSeePlayer()
