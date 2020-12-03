@@ -31,7 +31,8 @@ public class GunShoot : MonoBehaviour
     
     void Update()
     {
-        fire = Input.GetButtonDown("Fire1");
+        if(GetComponent<Player>().playerIsAlive)
+            fire = Input.GetButtonDown("Fire1");
 
     }
 

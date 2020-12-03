@@ -14,6 +14,7 @@ public class Zombie : MonoBehaviour
     public bool isDead = false;
     private ZombieRagdoll zombieRag;
     public bool isAttackingPlayerHp = false;
+    private bool canAttackPlayer = true;
 
     public enum ZombieState
     {
@@ -30,6 +31,7 @@ public class Zombie : MonoBehaviour
         animator = GetComponent<Animator>();
         zombieRag = GetComponent<ZombieRagdoll>();
         ChangeZombieState();
+        Player.OnPlayerDeath += PlayerIsDead;
     }
 
     void Update()
@@ -56,7 +58,7 @@ public class Zombie : MonoBehaviour
 
     IEnumerator Iddle()
     {
-        while (!canSeePlayer)
+        while (!canSeePlayer || !canAttackPlayer)
         {
             yield return new WaitForEndOfFrame();
         }
@@ -66,7 +68,7 @@ public class Zombie : MonoBehaviour
 
     IEnumerator Attacking()
     {
-        while (canSeePlayer && !isDead)
+        while (canSeePlayer && !isDead && canAttackPlayer)
         {
             haveSeenPlayer = true;
             nma.SetDestination(player.position);
@@ -112,6 +114,17 @@ public class Zombie : MonoBehaviour
         }
     }
 
+    public void PlayerIsDead()
+    {
+        if (!isDead)
+        {
+            canSeePlayer = false;
+            zombieState = ZombieState.Iddle;
+            canAttackPlayer = false;
+            ChangeZombieState();
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -126,5 +139,10 @@ public class Zombie : MonoBehaviour
         {
             playerIsNear = false;
         }
+    }
+
+    private void OnDestroy()
+    {
+        Player.OnPlayerDeath -= PlayerIsDead;
     }
 }

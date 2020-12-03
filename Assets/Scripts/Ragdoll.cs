@@ -1,18 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Ragdoll : MonoBehaviour
 {
     [SerializeField] private Rigidbody head, spine, pelvis, leftArm, leftElbow, leftHand, leftUpperLeg, leftBottonLeg, leftFoot, rightArm, rightElbow, rightHand, rightUpperLeg, rightBottonLeg, rightFoot;
     private CapsuleCollider capsuleCollider;
     private Rigidbody playerRB;
+    private Animator playerAnim;
 
     public bool Teste = false;
     void Start()
     {
         capsuleCollider = GetComponent<CapsuleCollider>();
         playerRB = GetComponent<Rigidbody>();
+        playerAnim = GetComponent<Animator>();
+        capsuleCollider.enabled = !capsuleCollider.enabled;
         ActiateOrDesactivateBodyColliders();
         DestroyRigidBody();
     }
@@ -23,11 +24,16 @@ public class Ragdoll : MonoBehaviour
         if (Teste)
         {
             Teste = false;
-            capsuleCollider.enabled = false;
-            Destroy(playerRB);
-            DesactivateKinematic();
-            ActiateOrDesactivateBodyColliders();
+            Die();
         }
+    }
+
+    public void Die()
+    {
+        Destroy(playerRB);
+        DesactivateKinematic();
+        playerAnim.enabled = false;
+        ActiateOrDesactivateBodyColliders();
     }
 
     void DestroyRigidBody()
@@ -70,6 +76,7 @@ public class Ragdoll : MonoBehaviour
     }
     void ActiateOrDesactivateBodyColliders() 
     {
+        capsuleCollider.enabled = !capsuleCollider.enabled;
         head.gameObject.GetComponent<Collider>().enabled = !head.gameObject.GetComponent<Collider>().enabled;
         spine.gameObject.GetComponent<Collider>().enabled = !spine.gameObject.GetComponent<Collider>().enabled;
         pelvis.gameObject.GetComponent<Collider>().enabled = !pelvis.gameObject.GetComponent<Collider>().enabled;

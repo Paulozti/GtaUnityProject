@@ -1,5 +1,3 @@
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
 Shader "Hidden/SeparableWeightedBlurDof34" {
 	Properties {
 		_MainTex ("Base (RGB)", 2D) = "" {}
@@ -36,7 +34,7 @@ Shader "Hidden/SeparableWeightedBlurDof34" {
 	
 	v2f vert (appdata_img v) {
 		v2f o;
-		o.pos = UnityObjectToClipPos(v.vertex);
+		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 		o.uv.xy = v.texcoord.xy;
 		o.uv01 =  v.texcoord.xyxy + offsets.xyxy * half4(1,1, -1,-1);
 		o.uv23 =  v.texcoord.xyxy + offsets.xyxy * half4(1,1, -1,-1) * 2.0;
@@ -47,7 +45,7 @@ Shader "Hidden/SeparableWeightedBlurDof34" {
 	
 	v2fSingle vertSingleTex (appdata_img v) {
 		v2fSingle o;
-		o.pos = UnityObjectToClipPos(v.vertex);
+		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 		o.uv.xy = v.texcoord.xy;
 		return o;  
 	}	

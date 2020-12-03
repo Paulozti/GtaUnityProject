@@ -1,5 +1,3 @@
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
 Shader "Hidden/GlobalFog" {
 Properties {
 	_MainTex ("Base (RGB)", 2D) = "black" {}
@@ -46,7 +44,7 @@ CGINCLUDE
 		v2f o;
 		half index = v.vertex.z;
 		v.vertex.z = 0.1;
-		o.pos = UnityObjectToClipPos(v.vertex);
+		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 		o.uv = v.texcoord.xy;
 		o.uv_depth = v.texcoord.xy;
 		
@@ -139,7 +137,7 @@ CGINCLUDE
 		// Compute fog amount
 		half fogFac = ComputeFogFactor (max(0.0,g));
 		// Do not fog skybox
-		if (rawDepth >= 0.999999)
+		if (rawDepth == _DistanceParams.y)
 			fogFac = 1.0;
 		//return fogFac; // for debugging
 		

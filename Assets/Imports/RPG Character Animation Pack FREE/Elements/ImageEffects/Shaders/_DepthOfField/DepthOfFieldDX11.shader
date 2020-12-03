@@ -1,5 +1,3 @@
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
 
 /*
 	DX11 Depth Of Field
@@ -161,7 +159,7 @@ Pass
 	v2f vert (appdata v)
 	{
 		v2f o;
-		o.pos = UnityObjectToClipPos (v.vertex);
+		o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
 		o.uv = v.texcoord;
 		o.uv_flip = v.texcoord;
 		#if UNITY_UV_STARTS_AT_TOP

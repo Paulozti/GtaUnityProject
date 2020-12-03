@@ -46,7 +46,6 @@ public class PlayerHP : MonoBehaviour
                     bool canCount = !otherZ.isAttackingPlayerHp;
                     if (canCount && otherZ.haveSeenPlayer)
                     {
-                        Debug.Log("enter trigger, zombie +1");
                         otherZ.isAttackingPlayerHp = true;
                         inContactWithZombie = true;
                         quantityOfZombies++;
@@ -59,7 +58,7 @@ public class PlayerHP : MonoBehaviour
     private IEnumerator LoseLife()
     {
         loosingLife = true;
-        while (inContactWithZombie)
+        while (inContactWithZombie && GetComponent<Player>().playerIsAlive)
         {
             HP = HP - 0.03f;
             vignetteIntensity = HP - 1;
@@ -69,6 +68,12 @@ public class PlayerHP : MonoBehaviour
             }
             vignette.intensity.value = vignetteIntensity * -1;
             yield return new WaitForSeconds(0.2f);
+
+            if(HP < 0)
+            {
+                HP = 0;
+                CallGameOver();
+            }
         }
         loosingLife = false;
     }
@@ -76,7 +81,7 @@ public class PlayerHP : MonoBehaviour
     private IEnumerator RegenLife()
     {
         canRegen = false;
-        while(!inContactWithZombie && vignetteIntensity < 0)
+        while(!inContactWithZombie && vignetteIntensity < 0 && GetComponent<Player>().playerIsAlive)
         {
             vignetteIntensity += 0.02f;
             HP = HP + 0.04f;
@@ -96,11 +101,13 @@ public class PlayerHP : MonoBehaviour
             Zombie otherZ = other.GetComponent<Zombie>();
             if (otherZ != null)
             {
-                if(other.GetComponent<NavMeshAgent>().remainingDistance > 2)
+                if (!otherZ.isDead)
                 {
-                    Debug.Log("Exit trigger, zombie -1");
-                    otherZ.isAttackingPlayerHp = false;
-                    ZombieKilled();
+                    if (other.GetComponent<NavMeshAgent>().remainingDistance > 2)
+                    {
+                        otherZ.isAttackingPlayerHp = false;
+                        ZombieKilled();
+                    }
                 }
                 
             }
@@ -116,5 +123,11 @@ public class PlayerHP : MonoBehaviour
             inContactWithZombie = false;
             canRegen = true;
         }
+    }
+
+    private void CallGameOver()
+    {
+        GetComponent<Ragdoll>().Die();
+        GetComponent<Player>().Die();
     }
 }
