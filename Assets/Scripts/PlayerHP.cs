@@ -10,7 +10,7 @@ public class PlayerHP : MonoBehaviour
 {
     public Volume ppVolume;
     public Vignette vignette;
-    public float HP = 1;
+    public static float HP = 1;
     public float vignetteIntensity = 0;
     public int quantityOfZombies = 0;
     private bool inContactWithZombie = false;
@@ -19,7 +19,7 @@ public class PlayerHP : MonoBehaviour
     void Start()
     {
         ppVolume.profile.TryGet<Vignette>(out vignette);
-        
+        HP = 1;
     }
 
     // Update is called once per frame

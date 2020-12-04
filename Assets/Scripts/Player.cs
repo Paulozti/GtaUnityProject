@@ -19,16 +19,26 @@ public class Player : MonoBehaviour
     private Rigidbody playerRB;
     private Animator playerAnim;
     private GameObject cam;
+    private SaveData save;
+    public static bool newRecord = false;
+    public static int numberOfZombiesKilled;
+    public static int recordOfZombiesKilled;
     public bool playerIsAlive = true;
     public delegate void PlayerIsDead();
     public static event PlayerIsDead OnPlayerDeath;
 
+
     void Start()
     {
+        newRecord = false;
+        numberOfZombiesKilled = 0;
         playerRB = GetComponent<Rigidbody>();
         playerAnim = GetComponent<Animator>();
         cam = Camera.main.gameObject;
         ChangeState();
+        save = new SaveData();
+        save = save.LoadData();
+        recordOfZombiesKilled = save.numberOfZombiesKilledRecord;
     }
 
     private void Update()
@@ -79,6 +89,12 @@ public class Player : MonoBehaviour
 
     public void Die()
     {
+        if(numberOfZombiesKilled > recordOfZombiesKilled)
+        {
+            save.numberOfZombiesKilledRecord = numberOfZombiesKilled;
+            save.SaveDataToFile(save);
+            newRecord = true;
+        }
         playerState = State.Dead;
         playerIsAlive = false;
         OnPlayerDeath?.Invoke();

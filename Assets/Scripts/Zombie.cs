@@ -91,11 +91,15 @@ public class Zombie : MonoBehaviour
 
     public void Die()
     {
-        isDead = true;
-        ZombieGenerator.numberOfSpawnedZombies--;
-        player.GetComponent<PlayerHP>().ZombieKilled();
-        zombieRag.ActivateRagdoll();
-        StartCoroutine(CleanBodyFromGround());
+        if (!isDead)
+        {
+            isDead = true;
+            ZombieGenerator.numberOfSpawnedZombies--;
+            player.GetComponent<PlayerHP>().ZombieKilled();
+            Player.numberOfZombiesKilled++;
+            zombieRag.ActivateRagdoll();
+            StartCoroutine(CleanBodyFromGround());
+        }
     }
 
     IEnumerator CleanBodyFromGround()
