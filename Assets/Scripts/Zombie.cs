@@ -71,13 +71,19 @@ public class Zombie : MonoBehaviour
         while (canSeePlayer && !isDead && canAttackPlayer)
         {
             haveSeenPlayer = true;
-            nma.SetDestination(player.position);
+            if (nma.isOnNavMesh)
+            {
+                nma.SetDestination(player.position);
+            }
+            else
+            {
+                ZombieGenerator.numberOfSpawnedZombies--;
+                Destroy(gameObject);
+            }
+            
             animator.SetBool("Attacking", true);
             animator.SetFloat("Speed", nma.velocity.magnitude);
-            if (nma.remainingDistance < 2)
-            {
 
-            }
             yield return new WaitForEndOfFrame();
         }
         ChangeZombieState();
@@ -86,8 +92,16 @@ public class Zombie : MonoBehaviour
     public void Die()
     {
         isDead = true;
+        ZombieGenerator.numberOfSpawnedZombies--;
         player.GetComponent<PlayerHP>().ZombieKilled();
         zombieRag.ActivateRagdoll();
+        StartCoroutine(CleanBodyFromGround());
+    }
+
+    IEnumerator CleanBodyFromGround()
+    {
+        yield return new WaitForSeconds(120);
+        Destroy(gameObject);
     }
     private void ZombieCanSeePlayer()
     {
