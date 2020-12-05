@@ -30,6 +30,8 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
         newRecord = false;
         numberOfZombiesKilled = 0;
         playerRB = GetComponent<Rigidbody>();

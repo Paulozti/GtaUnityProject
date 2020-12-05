@@ -60,6 +60,8 @@ public class Menus : MonoBehaviour
 
     IEnumerator ShowGameOverMenu()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         yield return new WaitForSeconds(1f);
         LeanTween.alphaCanvas(GameOver, 1, 2f);
         yield return new WaitForSeconds(2f);
@@ -83,6 +85,8 @@ public class Menus : MonoBehaviour
 
     IEnumerator ShowPauseGameMenu()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         Time.timeScale = 0;
         canPause = false;
         MenuButton.gameObject.SetActive(true);
@@ -99,6 +103,8 @@ public class Menus : MonoBehaviour
 
     IEnumerator HidePauseGameMenu()
     {
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
         LeanTween.alphaCanvas(PausePanel, 0f, 1f).setIgnoreTimeScale(true);
         LeanTween.alphaCanvas(PauseGameImage, 0f, 1f).setIgnoreTimeScale(true);
         LeanTween.alphaCanvas(MenuButton, 0f, 1f).setIgnoreTimeScale(true);

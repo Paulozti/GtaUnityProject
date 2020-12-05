@@ -10,7 +10,7 @@ public class ZombieGenerator : MonoBehaviour
     public GameObject zombiePrefab;
     private GameObject player;
     private bool shouldSpam = true;
-    public int maxNumberOfZombies = 50;
+    public int maxNumberOfZombies = 80;
     public int debug;
     public static int numberOfSpawnedZombies = 0;
 
@@ -42,7 +42,7 @@ public class ZombieGenerator : MonoBehaviour
             {
                 SpawnZombie();
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
         }
     }
 }

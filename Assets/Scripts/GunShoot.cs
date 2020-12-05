@@ -111,11 +111,11 @@ public class GunShoot : MonoBehaviour
         {
             if (point.magnitude > 0)
             {
-                rdb.AddForceAtPosition(vfxmuzzle.transform.forward * force, point, ForceMode.Impulse);
+                rdb.AddForceAtPosition(shootPosition.transform.forward * force, point, ForceMode.Impulse);
             }
             else
             {
-                rdb.AddForce(vfxmuzzle.transform.forward * force, ForceMode.Impulse);
+                rdb.AddForce(shootPosition.transform.forward * force, ForceMode.Impulse);
             }
         }
 
