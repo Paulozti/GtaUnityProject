@@ -63,12 +63,16 @@ public class Menus : MonoBehaviour
         yield return new WaitForSeconds(1f);
         LeanTween.alphaCanvas(GameOver, 1, 2f);
         yield return new WaitForSeconds(2f);
+        TextKilled.gameObject.SetActive(true);
+        Record.gameObject.SetActive(true);
+        TextLastRecord.gameObject.SetActive(true);
         if (Player.newRecord)
         {
             LeanTween.alphaCanvas(Record, 1, 1f);
             LeanTween.rotateZ(Record.gameObject, 0, 1f);
             LeanTween.scale(Record.gameObject, new Vector3(1,1,1), 1f);
         }
+        
         TextKilled.gameObject.GetComponent<Text>().text = "Number of killed zombies: " + Player.numberOfZombiesKilled;
         TextLastRecord.gameObject.GetComponent<Text>().text = "Record: " + Player.recordOfZombiesKilled;
         LeanTween.alphaCanvas(TextKilled, 1, 1f);
@@ -117,6 +121,7 @@ public class Menus : MonoBehaviour
 
     public void GoBackMenu()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene("Menu");
     }
 

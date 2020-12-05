@@ -100,6 +100,7 @@ public class Zombie : MonoBehaviour
             zombieRag.ActivateRagdoll();
             StartCoroutine(CleanBodyFromGround());
         }
+        transform.Translate(Vector3.forward);
     }
 
     IEnumerator CleanBodyFromGround()
