@@ -117,7 +117,7 @@ public class Menus : MonoBehaviour
 
     public void GoBackMenu()
     {
-        SceneManager.LoadScene("StartMenu");
+        SceneManager.LoadScene("Menu");
     }
 
     public void ExitGame()
